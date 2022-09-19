@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ReplaySubject } from 'rxjs';
 import {map} from 'rxjs/operators';
+import { environment } from 'src/environments/environment';
 import { User } from '../_models/user';
 
 @Injectable({
@@ -9,7 +10,7 @@ import { User } from '../_models/user';
 })
 export class AccountService {       //make request to API
 
-  baseUrl = 'https://localhost:5001/api/';
+  baseUrl = environment.apiUrl;
   private currentUserSource = new ReplaySubject<User>(1);
   currentUser$ = this.currentUserSource.asObservable();
 
@@ -18,7 +19,7 @@ export class AccountService {       //make request to API
   login(model : any)
   {
     return this.http.post(this.baseUrl + 'account/login', model).pipe(
-      map((response: User) => {
+      map((response: any) => {
         const user = response;
         if (user){
           localStorage.setItem('user', JSON.stringify(user));
